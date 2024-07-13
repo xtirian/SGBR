@@ -7,6 +7,8 @@ import { ConfigModule } from '@nestjs/config';
 import { UserController } from './application/controllers/user.controller';
 import { UserService } from './domain/services/user.service';
 import { LangService } from './utils/LangService';
+import { jwtConstants } from './lib/contants';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -24,6 +26,11 @@ import { LangService } from './utils/LangService';
       synchronize: true,
     }),
     TypeOrmModule.forFeature([User, Profile, Place]),
+    JwtModule.register({
+      global: true,
+      secret: process.env.SECRET_KEY || jwtConstants.secret,
+      signOptions: { expiresIn: '1h' },
+    }),
   ],
   controllers: [UserController],
   providers: [UserService, LangService],

@@ -7,6 +7,7 @@ import { LangService } from 'src/utils/LangService';
 import { Profile } from '../entities/Profile';
 import { regex } from 'src/utils/regex';
 import * as bcrypt from 'bcryptjs';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
@@ -16,6 +17,7 @@ export class UserService {
     @InjectRepository(Profile)
     private profileRepository: Repository<Profile>,
     private readonly langService: LangService,
+    private jwtService: JwtService,
   ) {}
 
   async validateSignup({ username, password }: SignupDto): Promise<SignupDto> {
@@ -63,5 +65,33 @@ export class UserService {
     });
     console.log(user);
     return this.usersRepository.save(user);
+  }
+
+  async generateToken(user: User): Promise<string> {
+    const payload = { username: user.username, sub: user.id };
+    return await this.jwtService.sign(payload);
+  }
+
+  async signin(signupDto: SignupDto): Promise<User> {
+    const user = await this.usersRepository.findOne({
+      where: { username: signupDto.username },
+    });
+    if (!user) {
+      throw new HttpException(
+        this.langService.getLang('invalidCredentials'),
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+    const isValidPassword = await bcrypt.compareSync(
+      signupDto.password,
+      user.password,
+    );
+    if (!isValidPassword) {
+      throw new HttpException(
+        this.langService.getLang('invalidCredentials'),
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+    return user;
   }
 }

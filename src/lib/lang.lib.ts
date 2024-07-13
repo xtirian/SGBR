@@ -14,8 +14,12 @@ export const lang = {
   userNotAuthenticated: 'User not authenticated',
   userCreated: 'User created',
   userCreationFailed: 'User creation failed',
+
+  // AUTH
+  invalidCredentials: 'Invalid credentials',
   usernameInvalid: 'Username must be alphanumeric and up to 10 characters long',
   passwordInvalid:
     'Password must be between 8 and 16 characters long, and include at least one special character, one uppercase letter, and one number',
   usernameAlreadyInUse: 'Username is already in use',
+  loginFailed: 'Login failed',
 };
