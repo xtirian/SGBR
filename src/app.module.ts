@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './domain/entities/User';
 import { Profile } from './domain/entities/Profile';
 import { Place } from './domain/entities/Place';
 import { ConfigModule } from '@nestjs/config';
+import { UserController } from './application/controllers/user.controller';
+import { UserService } from './domain/services/user.service';
+import { LangService } from './utils/LangService';
 
 @Module({
   imports: [
@@ -24,7 +25,7 @@ import { ConfigModule } from '@nestjs/config';
     }),
     TypeOrmModule.forFeature([User, Profile, Place]),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [UserController],
+  providers: [UserService, LangService],
 })
 export class AppModule {}
