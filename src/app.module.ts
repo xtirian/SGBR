@@ -13,6 +13,8 @@ import { ProfileController } from './application/controllers/profile.controller'
 import { ProfileService } from './domain/services/profile.service';
 import { AuthService } from './domain/services/auth.service';
 import { AuthGuard } from './application/middlewares/auth.guard';
+import { PlacesController } from './application/controllers/place.controller';
+import { PlaceService } from './domain/services/place.service';
 
 @Module({
   imports: [
@@ -36,7 +38,14 @@ import { AuthGuard } from './application/middlewares/auth.guard';
       signOptions: { expiresIn: '1h' },
     }),
   ],
-  controllers: [UserController, ProfileController],
-  providers: [LangService, UserService, AuthGuard, AuthService, ProfileService],
+  controllers: [UserController, ProfileController, PlacesController],
+  providers: [
+    LangService,
+    UserService,
+    AuthGuard,
+    AuthService,
+    ProfileService,
+    PlaceService,
+  ],
 })
 export class AppModule {}

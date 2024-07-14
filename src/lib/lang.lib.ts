@@ -36,7 +36,8 @@ export const lang = {
   // PLACE
   placeTitleInvalid: 'Title must contain only letters and spaces',
   cityInvalid: 'City must contain only letters and spaces',
-  stateInvalid: 'State must contain only letters and spaces',
+  stateInvalid:
+    'Invalid Brazilian State, please use the two-letter abbreviation',
   placeCreated: 'Place created',
   placeUpdated: 'Place updated',
   placeDeleted: 'Place deleted',

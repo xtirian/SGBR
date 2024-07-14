@@ -25,7 +25,7 @@ export class PlaceDto {
   thumb: IGalery_Photo['photo'];
 
   @IsOptional()
-  galery: IGalery_Photo[];
+  gallery: IGalery_Photo[];
 
   profileId: number;
 

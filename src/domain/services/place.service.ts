@@ -41,8 +41,8 @@ export class PlaceService {
       );
   }
 
-  validateGalery(data: PlaceDto) {
-    const { galery } = data;
+  validateGallery(data: PlaceDto) {
+    const { gallery: galery } = data;
 
     if (galery.length) {
       galery.forEach((photo) => {
@@ -98,7 +98,7 @@ export class PlaceService {
     }
 
     await this.validateData(data);
-    this.validateGalery(data);
+    this.validateGallery(data);
 
     const placeModel = this.placesRepository.create({
       ...place,
@@ -114,6 +114,46 @@ export class PlaceService {
       );
     }
 
+    return updatePlace;
+  }
+
+  async editGallery({
+    id,
+    gallery,
+    profileId,
+  }: {
+    id: Place['id'];
+    gallery: Place['gallery'];
+    profileId: Place['id'];
+  }): Promise<Place> {
+    if (!id || !gallery || !profileId) {
+      throw new HttpException(
+        this.langService.getLang('dataRequired'),
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    const place = await this.placesRepository.findOne({ where: { id } });
+    if (!place) {
+      throw new HttpException(
+        this.langService.getLang('notFound'),
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    if (place.profileId !== profileId) {
+      throw new HttpException(
+        this.langService.getLang('notAuthorized'),
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+    const placeModel = this.placesRepository.create({ ...place, gallery });
+    this.validateGallery(placeModel);
+    const updatePlace = await this.placesRepository.save(placeModel);
+    if (!updatePlace) {
+      throw new HttpException(
+        this.langService.getLang('somethingWentWrong'),
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
     return updatePlace;
   }
 

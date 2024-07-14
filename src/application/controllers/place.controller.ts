@@ -10,8 +10,11 @@ import {
   Put,
   Query,
   Request,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { Request as ExpressRequest } from 'express';
 import { ResponseDto } from '../dtos/response.dto';
 import { Place } from 'src/domain/entities/Place';
@@ -20,6 +23,9 @@ import { PlaceDto } from '../dtos/place.dto';
 import { PlaceService } from 'src/domain/services/place.service';
 import { LangService } from 'src/utils/LangService';
 import { DeleteResult } from 'typeorm';
+import { diskStorage } from 'multer';
+import { v4 as uuidv4 } from 'uuid';
+import { extname } from 'path';
 
 @Controller('api/auth')
 export class PlacesController {
@@ -28,14 +34,37 @@ export class PlacesController {
     private readonly langService: LangService,
   ) {}
 
-  @Post('profile')
+  @Post('place')
   @UseGuards(AuthGuard)
+  @UseInterceptors(
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: './public/uploads',
+        filename: (req, file, cb) => {
+          const name = uuidv4();
+          const extension = extname(file.originalname);
+          cb(null, `${name}${extension}`);
+        },
+      }),
+    }),
+  )
   async createPlace(
+    @UploadedFile() thumb: Express.Multer.File,
     @Request() req: ExpressRequest,
     @Body() placeDto: PlaceDto,
   ): Promise<ResponseDto<Place>> {
     try {
+      if (!placeDto) {
+        throw new HttpException(
+          this.langService.getLang('dataRequired'),
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
       placeDto.profileId = req.user!.profileId;
+      if (thumb.filename) {
+        placeDto.thumb = `/uploads/${thumb.filename}`;
+      }
       const responseService = await this.placeService.create(placeDto);
       return {
         statusCode: HttpStatus.OK,
@@ -54,7 +83,7 @@ export class PlacesController {
     }
   }
 
-  @Put('profile')
+  @Put('place')
   @UseGuards(AuthGuard)
   async editPlace(
     @Request() req: ExpressRequest,
@@ -84,7 +113,7 @@ export class PlacesController {
     }
   }
 
-  @Delete('profile/:id')
+  @Delete('place/:id')
   @UseGuards(AuthGuard)
   async delete(
     @Request() req: ExpressRequest,
@@ -112,7 +141,7 @@ export class PlacesController {
     }
   }
 
-  @Get('profiles')
+  @Get('place/:id')
   @UseGuards(AuthGuard)
   async getById(@Param('id') id: Place['id']): Promise<ResponseDto<Place>> {
     try {
@@ -134,7 +163,7 @@ export class PlacesController {
     }
   }
 
-  @Get('profile')
+  @Get('places')
   @UseGuards(AuthGuard)
   async getAll(
     @Query() search: string,

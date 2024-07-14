@@ -23,10 +23,10 @@ export class Place {
   state: string;
 
   @Column({ type: 'json', nullable: true })
-  thumb: IGalery_Photo['photo'];
+  thumb: IGallery_Photo['photo'];
 
   @Column({ type: 'json', nullable: true })
-  galery: IGalery_Photo[];
+  gallery: IGallery_Photo[];
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
@@ -51,7 +51,7 @@ export class Place {
   Profile: Profile;
 }
 
-interface IGalery_Photo {
+interface IGallery_Photo {
   order: number;
   photo: string;
 }
