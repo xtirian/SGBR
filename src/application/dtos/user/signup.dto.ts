@@ -1,5 +1,5 @@
-import { regex } from 'src/utils/regex';
 import { Matches } from 'class-validator';
+import { regex } from 'src/lib/regex';
 
 export class SignupDto {
   @Matches(regex.username, {

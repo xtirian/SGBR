@@ -22,4 +22,12 @@ export const lang = {
     'Password must be between 8 and 16 characters long, and include at least one special character, one uppercase letter, and one number',
   usernameAlreadyInUse: 'Username is already in use',
   loginFailed: 'Login failed',
+  tokenInvalid: 'Invalid token',
+  tokenExpired: 'Session expired! Please sign In',
+
+  // PROFILE
+  profileNotFound: 'Profile not found',
+  nameInvalid: 'Name must be alphabetic',
+  emailInvalid: 'Email must be valid',
+  photoInvalid: 'Photo must be a valid URL',
 };

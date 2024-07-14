@@ -1,4 +1,5 @@
 import {
+  BeforeUpdate,
   Column,
   Entity,
   OneToMany,
@@ -31,6 +32,11 @@ export class Profile {
     onUpdate: 'CURRENT_TIMESTAMP',
   })
   updatedAt: Date;
+
+  @BeforeUpdate()
+  updateTimestamp() {
+    this.updatedAt = new Date();
+  }
 
   @OneToMany(() => Place, (place) => place.Profile)
   Places?: Place[];

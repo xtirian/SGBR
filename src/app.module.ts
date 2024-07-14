@@ -9,6 +9,10 @@ import { UserService } from './domain/services/user.service';
 import { LangService } from './utils/LangService';
 import { jwtConstants } from './lib/contants';
 import { JwtModule } from '@nestjs/jwt';
+import { ProfileController } from './application/controllers/profile.controller';
+import { ProfileService } from './domain/services/profile.service';
+import { AuthService } from './domain/services/auth.service';
+import { AuthGuard } from './application/middlewares/auth.guard';
 
 @Module({
   imports: [
@@ -32,7 +36,7 @@ import { JwtModule } from '@nestjs/jwt';
       signOptions: { expiresIn: '1h' },
     }),
   ],
-  controllers: [UserController],
-  providers: [UserService, LangService],
+  controllers: [UserController, ProfileController],
+  providers: [LangService, UserService, AuthGuard, AuthService, ProfileService],
 })
 export class AppModule {}

@@ -5,9 +5,9 @@ import { User } from '../entities/User';
 import { SignupDto } from 'src/application/dtos/user/signup.dto';
 import { LangService } from 'src/utils/LangService';
 import { Profile } from '../entities/Profile';
-import { regex } from 'src/utils/regex';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
+import { regex } from 'src/lib/regex';
 
 @Injectable()
 export class UserService {
@@ -68,7 +68,11 @@ export class UserService {
   }
 
   async generateToken(user: User): Promise<string> {
-    const payload = { username: user.username, sub: user.id };
+    const payload = {
+      username: user.username,
+      sub: user.id,
+      profile: user.profileId,
+    };
     return await this.jwtService.sign(payload);
   }
 
