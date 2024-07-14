@@ -65,7 +65,7 @@ export class UserService {
       const user = this.usersRepository.create({
         username,
         password,
-        role: 'admin',
+        role: 'user',
         profileId: profile.id,
       });
       await queryRunner.manager.save(user);
