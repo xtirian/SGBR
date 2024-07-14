@@ -6,6 +6,7 @@ export const lang = {
   dataRequired: 'Data is required',
   photoInvalid: 'Photo must be a valid URL',
   notAuthorized: 'Not authorized',
+  sucessLabel: 'Success',
 
   // USER
   usernameRequired: 'Username is required',
@@ -36,4 +37,7 @@ export const lang = {
   placeTitleInvalid: 'Title must contain only letters and spaces',
   cityInvalid: 'City must contain only letters and spaces',
   stateInvalid: 'State must contain only letters and spaces',
+  placeCreated: 'Place created',
+  placeUpdated: 'Place updated',
+  placeDeleted: 'Place deleted',
 };

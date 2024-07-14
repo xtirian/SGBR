@@ -20,7 +20,7 @@ export class ProfileController {
 
   @Put('profile')
   @UseGuards(AuthGuard)
-  async editUser(
+  async editProfile(
     @Request() req: ExpressRequest,
     @Body() profileDto: ProfileDto,
   ): Promise<ResponseDto<Profile>> {
@@ -46,35 +46,3 @@ export class ProfileController {
     }
   }
 }
-
-// // user.service.ts
-
-// import { Injectable } from '@nestjs/common';
-// import { InjectRepository } from '@nestjs/typeorm';
-// import { Repository } from 'typeorm';
-// import { User } from '../entities/user.entity'; // Sua entidade de usuário
-// import { EditUserDto } from './edit-user.dto'; // Seu DTO de edição de usuário
-
-// @Injectable()
-// export class UserService {
-//   constructor(
-//     @InjectRepository(User)
-//     private readonly userRepository: Repository<User>,
-//   ) {}
-
-//   async editUser(id: number, editUserDto: EditUserDto): Promise<User> {
-//     const user = await this.userRepository.findOne(id);
-//     if (!user) {
-//       throw new Error('User not found');
-//     }
-
-//     // Update user fields based on editUserDto
-//     user.username = editUserDto.username;
-//     user.password = editUserDto.password;
-//     user.name = editUserDto.name;
-//     user.email = editUserDto.email;
-//     user.foto = editUserDto.foto;
-
-//     return await this.userRepository.save(user);
-//   }
-// }

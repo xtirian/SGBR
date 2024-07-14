@@ -171,19 +171,13 @@ export class PlaceService {
     return place;
   }
 
-  async get(filter: IFilterPlace) {
+  async getAll(filter: IFilterPlace) {
     const { busca, skip, take } = filter;
     const query = this.placesRepository.createQueryBuilder('place');
-    busca.title &&
-      query.andWhere('place.name ILIKE :title', { title: `%${busca.title}%` });
-    busca.city &&
-      query.andWhere('place.city ILIKE :city', { city: `%${busca.city}%` });
     busca.state &&
       query.andWhere('place.state ILIKE :state', { state: `%${busca.state}%` });
-    busca.profileId &&
-      query.andWhere('place.profileId = :profileId', {
-        profileId: busca.profileId,
-      });
+    busca.city &&
+      query.andWhere('place.city ILIKE :city', { city: `%${busca.city}%` });
     busca.search &&
       query.andWhere(
         new Brackets((qb) => {
@@ -209,8 +203,6 @@ interface IFilterPlace {
     search?: string;
     state?: string;
     city?: string;
-    title?: string;
-    profileId?: number;
   };
   take: number;
   skip: number;
