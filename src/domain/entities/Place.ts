@@ -2,6 +2,7 @@ import {
   BeforeUpdate,
   Column,
   Entity,
+  JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -45,8 +46,9 @@ export class Place {
   @Column({ nullable: false })
   profileId: number;
 
-  @OneToOne(() => Profile, (profile) => profile.Places)
-  Profile?: Profile;
+  @OneToOne(() => Profile, { cascade: true })
+  @JoinColumn({ name: 'profileId' })
+  Profile: Profile;
 }
 
 interface IGalery_Photo {

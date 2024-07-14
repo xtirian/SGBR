@@ -4,6 +4,8 @@ export const lang = {
   notImplemented: 'Not implemented',
   somethingWentWrong: 'Something went wrong, please try again later',
   dataRequired: 'Data is required',
+  photoInvalid: 'Photo must be a valid URL',
+  notAuthorized: 'Not authorized',
 
   // USER
   usernameRequired: 'Username is required',
@@ -29,5 +31,9 @@ export const lang = {
   profileNotFound: 'Profile not found',
   nameInvalid: 'Name must be alphabetic',
   emailInvalid: 'Email must be valid',
-  photoInvalid: 'Photo must be a valid URL',
+
+  // PLACE
+  placeTitleInvalid: 'Title must contain only letters and spaces',
+  cityInvalid: 'City must contain only letters and spaces',
+  stateInvalid: 'State must contain only letters and spaces',
 };
