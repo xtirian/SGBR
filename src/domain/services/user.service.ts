@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { User } from '../entities/User';
 import { UserDto } from 'src/application/dtos/user.dto';
 import { LangService } from 'src/utils/LangService';
@@ -16,6 +16,7 @@ export class UserService {
     private usersRepository: Repository<User>,
     @InjectRepository(Profile)
     private profileRepository: Repository<Profile>,
+    private dataSource: DataSource,
     private readonly langService: LangService,
     private jwtService: JwtService,
   ) {}
@@ -53,25 +54,40 @@ export class UserService {
     return { username, password: hashedPassword };
   }
 
-  async signup(signupDto: UserDto): Promise<User> {
-    const { username, password } = await this.validateSignup(signupDto);
-    const profile = this.profileRepository.create();
-    await this.profileRepository.save(profile);
-    const user = this.usersRepository.create({
-      username,
-      password,
-      profileId: profile.id,
-      role: 'user',
-    });
-    console.log(user);
-    return this.usersRepository.save(user);
+  async signup(userDto: UserDto): Promise<User> {
+    const { username, password } = await this.validateSignup(userDto);
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      const profile = this.profileRepository.create();
+      await queryRunner.manager.save(profile);
+      const user = this.usersRepository.create({
+        username,
+        password,
+        role: 'admin',
+        profileId: profile.id,
+      });
+      await queryRunner.manager.save(user);
+      await queryRunner.commitTransaction();
+      return this.usersRepository.save(user);
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw new HttpException(
+        this.langService.getLang('userCreationFailed'),
+        HttpStatus.BAD_REQUEST,
+      );
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   async generateToken(user: User): Promise<string> {
     const payload = {
       username: user.username,
       sub: user.id,
-      profile: user.profileId,
+      profileId: user.profileId,
+      Profile: user.Profile,
     };
     return await this.jwtService.sign(payload);
   }
@@ -79,6 +95,9 @@ export class UserService {
   async signin(signupDto: UserDto): Promise<User> {
     const user = await this.usersRepository.findOne({
       where: { username: signupDto.username },
+      relations: {
+        Profile: true,
+      },
     });
     if (!user) {
       throw new HttpException(

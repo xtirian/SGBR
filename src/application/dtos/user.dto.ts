@@ -1,4 +1,5 @@
-import { Matches } from 'class-validator';
+import { IsOptional, Matches } from 'class-validator';
+import { Profile } from 'src/domain/entities/Profile';
 import { regex } from 'src/lib/regex';
 
 export class UserDto {
@@ -12,4 +13,7 @@ export class UserDto {
       'Password must be between 8 and 16 characters long, and include at least one special character, one uppercase letter, and one number',
   })
   password: string;
+
+  @IsOptional()
+  Profile?: Profile;
 }

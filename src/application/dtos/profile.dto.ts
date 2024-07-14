@@ -1,8 +1,9 @@
 import { IsEmail, IsOptional, IsString, Matches } from 'class-validator';
+import { regex } from 'src/lib/regex';
 
 export class ProfileDto {
   @IsOptional()
-  @Matches(/^[a-zA-Z ]*$/, {
+  @Matches(regex.name, {
     message: 'Name must contain only letters and spaces',
   })
   name: string;

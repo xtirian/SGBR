@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   OneToOne,
   BeforeUpdate,
+  JoinColumn,
 } from 'typeorm';
 import { Profile } from './Profile';
 
@@ -39,6 +40,7 @@ export class User {
   @Column({ nullable: false })
   profileId: number;
 
-  @OneToOne(() => Profile, (profile) => profile.User)
+  @OneToOne(() => Profile, { cascade: true })
+  @JoinColumn({ name: 'profileId' })
   Profile: Profile;
 }

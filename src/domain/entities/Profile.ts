@@ -3,11 +3,9 @@ import {
   Column,
   Entity,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Place } from './Place';
-import { User } from './User';
 
 @Entity('profile')
 export class Profile {
@@ -40,7 +38,4 @@ export class Profile {
 
   @OneToMany(() => Place, (place) => place.Profile)
   Places?: Place[];
-
-  @OneToOne(() => User, (User) => User.Profile)
-  User?: User;
 }
