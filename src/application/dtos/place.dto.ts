@@ -22,7 +22,7 @@ export class PlaceDto {
   @Matches(regex.photo, {
     message: 'Thumb must be a valid url',
   })
-  thumb: IGalery_Photo['photo'];
+  thumb: string;
 
   @IsOptional()
   gallery: IGalery_Photo[];

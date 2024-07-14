@@ -22,8 +22,8 @@ export class Place {
   @Column({ nullable: false })
   state: string;
 
-  @Column({ type: 'json', nullable: true })
-  thumb: IGallery_Photo['photo'];
+  @Column({ type: 'text', nullable: true })
+  thumb: string;
 
   @Column({ type: 'json', nullable: true })
   gallery: IGallery_Photo[];
@@ -48,7 +48,7 @@ export class Place {
 
   @OneToOne(() => Profile, { cascade: true })
   @JoinColumn({ name: 'profileId' })
-  Profile: Profile;
+  Profile?: Profile;
 }
 
 interface IGallery_Photo {

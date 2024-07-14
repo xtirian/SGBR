@@ -1,6 +1,6 @@
 export const regex = {
   // GLOBAL
-  photo: /\.(jpg|jpeg|png|gif|bmp|tiff|svg)$i/,
+  photo: /.*\.(jpg|jpeg|png|gif|bmp|tiff|svg)$/i,
   // AUTH
   username: /^[a-zA-Z0-9]{1,10}$/,
   password:

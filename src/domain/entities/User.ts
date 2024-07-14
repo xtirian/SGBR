@@ -42,5 +42,5 @@ export class User {
 
   @OneToOne(() => Profile, { cascade: true })
   @JoinColumn({ name: 'profileId' })
-  Profile: Profile;
+  Profile?: Profile;
 }

@@ -2,9 +2,9 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Place } from '../entities/Place';
 import { Brackets, DeleteResult, Repository } from 'typeorm';
-import { LangService } from 'src/utils/LangService';
+import { LangService } from '../../utils/LangService';
 import { PlaceDto } from 'src/application/dtos/place.dto';
-import { regex } from 'src/lib/regex';
+import { regex } from '../../lib/regex';
 import { Profile } from '../entities/Profile';
 
 @Injectable()
@@ -62,10 +62,14 @@ export class PlaceService {
         HttpStatus.BAD_REQUEST,
       );
 
-    await this.validateData(data);
-    const place = this.placesRepository.create(data);
-    await this.placesRepository.save(place);
-    return place;
+    try {
+      await this.validateData(data);
+      const place = this.placesRepository.create(data);
+      await this.placesRepository.save(place);
+      return place;
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.BAD_REQUEST);
+    }
   }
 
   async edit({

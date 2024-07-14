@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { lang } from 'src/lib/lang.lib';
+import { lang } from '../lib/lang.lib';
 
 @Injectable()
 export class LangService {

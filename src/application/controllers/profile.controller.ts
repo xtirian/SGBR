@@ -25,6 +25,7 @@ export class ProfileController {
     @Body() profileDto: ProfileDto,
   ): Promise<ResponseDto<Profile>> {
     try {
+      console.log(req.user);
       const responseService = await this.profileService.edit({
         id: req.user!.profileId,
         data: profileDto,
