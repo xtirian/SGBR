@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../entities/User';
-import { SignupDto } from 'src/application/dtos/user/signup.dto';
+import { UserDto } from 'src/application/dtos/user.dto';
 import { LangService } from 'src/utils/LangService';
 import { Profile } from '../entities/Profile';
 import * as bcrypt from 'bcryptjs';
@@ -20,7 +20,7 @@ export class UserService {
     private jwtService: JwtService,
   ) {}
 
-  async validateSignup({ username, password }: SignupDto): Promise<SignupDto> {
+  async validateSignup({ username, password }: UserDto): Promise<UserDto> {
     if (!username && !password)
       throw new HttpException(
         this.langService.getLang('dataRequired'),
@@ -53,7 +53,7 @@ export class UserService {
     return { username, password: hashedPassword };
   }
 
-  async signup(signupDto: SignupDto): Promise<User> {
+  async signup(signupDto: UserDto): Promise<User> {
     const { username, password } = await this.validateSignup(signupDto);
     const profile = this.profileRepository.create();
     await this.profileRepository.save(profile);
@@ -76,7 +76,7 @@ export class UserService {
     return await this.jwtService.sign(payload);
   }
 
-  async signin(signupDto: SignupDto): Promise<User> {
+  async signin(signupDto: UserDto): Promise<User> {
     const user = await this.usersRepository.findOne({
       where: { username: signupDto.username },
     });

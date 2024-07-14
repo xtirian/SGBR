@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Profile } from '../entities/Profile';
 import { LangService } from 'src/utils/LangService';
-import { ProfileDto } from 'src/application/dtos/profile/profile.dto';
+import { ProfileDto } from 'src/application/dtos/profile.dto';
 import { regex } from 'src/lib/regex';
 import { Repository } from 'typeorm';
 

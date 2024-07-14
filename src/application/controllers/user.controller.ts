@@ -8,7 +8,7 @@ import {
 import { UserService } from '../../domain/services/user.service';
 
 import { User } from '../../domain/entities/User';
-import { SignupDto } from '../dtos/user/signup.dto';
+import { UserDto } from '../dtos/user.dto';
 import { ResponseDto } from '../dtos/response.dto';
 import { LangService } from 'src/utils/LangService';
 
@@ -20,7 +20,7 @@ export class UserController {
   ) {}
 
   @Post('signup')
-  async signup(@Body() signupDto: SignupDto): Promise<ResponseDto<User>> {
+  async signup(@Body() signupDto: UserDto): Promise<ResponseDto<User>> {
     try {
       const serviceResponse = await this.signupService.signup(signupDto);
       return {
@@ -42,7 +42,7 @@ export class UserController {
 
   @Post('signin')
   async signin(
-    @Body() signupDto: SignupDto,
+    @Body() signupDto: UserDto,
   ): Promise<ResponseDto<{ user: User; token: string }>> {
     try {
       const serviceResponse = await this.signupService.signin(signupDto);

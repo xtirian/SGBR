@@ -8,7 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ProfileService } from 'src/domain/services/profile.service';
-import { ProfileDto } from '../dtos/profile/profile.dto';
+import { ProfileDto } from '../dtos/profile.dto';
 import { Profile } from 'src/domain/entities/Profile';
 import { ResponseDto } from '../dtos/response.dto';
 import { AuthGuard } from '../middlewares/auth.guard';

@@ -1,7 +1,7 @@
 import { Matches } from 'class-validator';
 import { regex } from 'src/lib/regex';
 
-export class SignupDto {
+export class UserDto {
   @Matches(regex.username, {
     message: 'Username must be alphanumeric and up to 10 characters long',
   })
