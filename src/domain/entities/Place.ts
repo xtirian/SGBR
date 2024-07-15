@@ -1,4 +1,11 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BeforeUpdate,
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Profile } from './Profile';
 
 @Entity('place')
@@ -15,11 +22,11 @@ export class Place {
   @Column({ nullable: false })
   state: string;
 
-  @Column({ type: 'json', nullable: true })
-  thumb: IGalery_Photo['photo'];
+  @Column({ type: 'text', nullable: true })
+  thumb: string;
 
   @Column({ type: 'json', nullable: true })
-  galery: IGalery_Photo[];
+  gallery: IGallery_Photo[];
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
@@ -31,14 +38,20 @@ export class Place {
   })
   updatedAt: Date;
 
+  @BeforeUpdate()
+  updateTimestamp() {
+    this.updatedAt = new Date();
+  }
+
   @Column({ nullable: false })
   profileId: number;
 
-  @OneToOne(() => Profile, (profile) => profile.Places)
-  Profile?: Profile;
+  @ManyToOne(() => Profile, profile => profile.Places)
+  @JoinColumn({ name: 'profileId' })
+  Profile: Profile;
 }
 
-interface IGalery_Photo {
+interface IGallery_Photo {
   order: number;
   photo: string;
 }

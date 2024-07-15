@@ -1,12 +1,11 @@
 import {
+  BeforeUpdate,
   Column,
   Entity,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Place } from './Place';
-import { User } from './User';
 
 @Entity('profile')
 export class Profile {
@@ -32,9 +31,12 @@ export class Profile {
   })
   updatedAt: Date;
 
-  @OneToMany(() => Place, (place) => place.Profile)
-  Places?: Place[];
+  @BeforeUpdate()
+  updateTimestamp() {
+    this.updatedAt = new Date();
+  }
 
-  @OneToOne(() => User, (User) => User.Profile)
-  User?: User;
+  @OneToMany(() => Place, place => place.Profile)
+  Places: Place[];
 }
+

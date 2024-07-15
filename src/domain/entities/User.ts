@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToOne,
+  BeforeUpdate,
+  JoinColumn,
+} from 'typeorm';
 import { Profile } from './Profile';
 
 @Entity('user')
@@ -25,9 +32,15 @@ export class User {
   })
   updatedAt: Date;
 
+  @BeforeUpdate()
+  updateTimestamp() {
+    this.updatedAt = new Date();
+  }
+
   @Column({ nullable: false })
   profileId: number;
 
-  @OneToOne(() => Profile, (profile) => profile.User)
-  Profile: Profile;
+  @OneToOne(() => Profile, { cascade: true })
+  @JoinColumn({ name: 'profileId' })
+  Profile?: Profile;
 }
