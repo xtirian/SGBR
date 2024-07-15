@@ -196,9 +196,10 @@ src/
 |        |-- User.ts 
 |-- infrastructure/ 
 |    |-- models/ 
-|    |-- repository/ 
-|-- lib/ 
-|-- utils/ 
+|    |-- repository/
+|-- shared/ 
+|    |-- lib/ 
+|    |-- utils/ 
 |-- main.ts 
 |-- app.module.ts
 ```
