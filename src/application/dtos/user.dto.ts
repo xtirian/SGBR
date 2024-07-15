@@ -1,6 +1,6 @@
 import { IsOptional, Matches } from 'class-validator';
 import { Profile } from 'src/domain/entities/Profile';
-import { regex } from 'src/lib/regex';
+import { regex } from 'src/shared/lib/regex';
 
 export class UserDto {
   @Matches(regex.username, {

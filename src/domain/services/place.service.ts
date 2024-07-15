@@ -2,9 +2,9 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Place } from '../entities/Place';
 import { Brackets, DeleteResult, Repository } from 'typeorm';
-import { LangService } from '../../utils/LangService';
+import { LangService } from '../../shared/utils/LangService';
 import { PlaceDto } from 'src/application/dtos/place.dto';
-import { regex } from '../../lib/regex';
+import { regex } from '../../shared/lib/regex';
 import { Profile } from '../entities/Profile';
 
 @Injectable()
@@ -221,7 +221,7 @@ export class PlaceService {
     const city = typeof busca.city === 'string' ? busca.city : '';
     const search = typeof busca.search === 'string' ? busca.search : '';
     const take = filter.take ? filter.take : 5;
-    const skip = filter.skip ? filter.skip : 0;    
+    const skip = filter.skip ? filter.skip : 0;
     const query = this.placesRepository.createQueryBuilder('place');
     if (state) {
       query.andWhere('place.state ILIKE :state', { state: `%${state}%` });
@@ -235,14 +235,11 @@ export class PlaceService {
           qb.where('place.name ILIKE :search', { search: `%${search}%` })
             .orWhere('place.city ILIKE :search', { search: `%${search}%` })
             .orWhere('place.state ILIKE :search', { search: `%${search}%` });
-        })
+        }),
       );
     }
 
-    const places = await query
-      .skip(skip)
-      .take(take)
-      .getMany();
+    const places = await query.skip(skip).take(take).getMany();
     return places;
   }
 }

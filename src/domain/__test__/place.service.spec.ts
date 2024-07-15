@@ -4,7 +4,7 @@ import { PlaceService } from '../services/place.service';
 import { Place } from '../entities/Place';
 import { PlaceDto } from 'src/application/dtos/place.dto';
 import { Test, TestingModule } from '@nestjs/testing';
-import { LangService } from '../../utils/LangService';
+import { LangService } from '../../shared/utils/LangService';
 
 const mockPlaceRepository = () => ({
   findOne: jest.fn(),

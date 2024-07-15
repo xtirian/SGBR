@@ -46,7 +46,7 @@ export class Place {
   @Column({ nullable: false })
   profileId: number;
 
-  @ManyToOne(() => Profile, profile => profile.Places)
+  @ManyToOne(() => Profile, (profile) => profile.Places)
   @JoinColumn({ name: 'profileId' })
   Profile: Profile;
 }
