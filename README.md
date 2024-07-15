@@ -2,6 +2,34 @@
 
 Este é um desafio para avaliar suas habilidades na construção de APIs utilizando NodeJS/NestJs. O objetivo é criar uma API simples para gerenciar lugares, utilizando PostgreSQL como banco de dados. Conhecimento em Domain Driven Design será considerado um diferencial na avaliação.
 
+## Sumário
+* [Requisitos](#requisitos)
+  * [Obrigatórios](#obrigatórios)
+  * [Opcionais](#opcionais)
+* [Como executar](#como-executar)
+* [Endpoints](#endpoints)
+  * [Usuários](#usuários)
+    * [POST /api/signup](#post-apisignup)
+    * [POST /api/signin](#post-apisignin)
+  * [Perfil](#perfil)
+    * [PUT /api/auth/profile](#put-apiauthprofile)
+  * [Lugares](#lugares)
+    * [POST /api/auth/place](#post-apiauthplace)
+    * [PUT /api/auth/place/:id](#put-apiauthplaceid)
+    * [DELETE /api/auth/place/:id](#delete-apiauthplaceid)
+    * [GET /api/auth/place/:id](#get-apiauthplaceid)
+    * [GET /api/auth/places](#get-apiauthplaces)
+* [Estrutura de Pastas](#estrutura-de-pastas)
+ 
+
+
+## Requisitos
+### Obrigatórios
+* NodeJs
+* Yarn ou Npm
+### Opcionais
+* Docker / Docker-compose
+
 ## Como executar
 
 1. Configuração inicial do ambiente:
