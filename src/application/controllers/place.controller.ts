@@ -21,11 +21,11 @@ import { Place } from 'src/domain/entities/Place';
 import { AuthGuard } from '../middlewares/auth.guard';
 import { PlaceDto } from '../dtos/place.dto';
 import { PlaceService } from 'src/domain/services/place.service';
-import { LangService } from 'src/utils/LangService';
 import { DeleteResult } from 'typeorm';
 import { diskStorage } from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 import { extname } from 'path';
+import { LangService } from 'src/shared/utils/LangService';
 
 @Controller('api/auth')
 export class PlacesController {

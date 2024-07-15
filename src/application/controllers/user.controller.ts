@@ -10,7 +10,7 @@ import { UserService } from '../../domain/services/user.service';
 import { User } from '../../domain/entities/User';
 import { UserDto } from '../dtos/user.dto';
 import { ResponseDto } from '../dtos/response.dto';
-import { LangService } from 'src/utils/LangService';
+import { LangService } from 'src/shared/utils/LangService';
 
 @Controller('api')
 export class UserController {
