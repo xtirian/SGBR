@@ -1,74 +1,176 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Desafio do Desenvolvedor Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Este é um desafio para avaliar suas habilidades na construção de APIs utilizando NodeJS/NestJs. O objetivo é criar uma API simples para gerenciar lugares, utilizando PostgreSQL como banco de dados. Conhecimento em Domain Driven Design será considerado um diferencial na avaliação.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Como executar
 
-## Description
+1. Configuração inicial do ambiente:
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-openssl rand -base64 256
+    Copie o arquivo de exemplo de configuração .env para o arquivo de configuração real:
 
-## Installation
+    ```bash
+    cp example.local.env .env
+    ```
+2. Configuração do arquivo .env:
 
-```bash
-$ yarn install
+    Edite o arquivo .env para configurar suas variáveis de ambiente conforme necessário para o seu ambiente de desenvolvimento. Certifique-se de definir corretamente os valores de DATABASE_NAME, DATABASE_USER, DATABASE_PASSWORD, DATABASE_PORT, ENVIRONMENT, APP_HOST, e APP_PORT.
+
+3. Execução usando Docker Compose:
+
+  Para construir e iniciar seu ambiente Docker, utilize o comando:
+
+  ```bash
+  docker-compose up --build
+  ```
+  OU
+  ```bash
+   yarn install
+  ```
+  e depois
+  ```bash
+  yarn start:dev
+  ```
+
+
+## Endpoints
+### Usuários
+
+#### POST /api/signup
+* Cria um novo usuário.
+* Corpo da requisição (signupDto): JSON contendo dados do usuário.
+* Retorna um objeto JSON com status, mensagem e dados do usuário criado.
+**Payload da Requisição:**
+``` json
+{
+	"username": "user",
+	"password": "Acesso1!"
+}
 ```
 
-## Running the app
+#### POST /api/signin
 
-```bash
-# development
-$ yarn run start
-
-# watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
+* Autentica um usuário existente.
+* Corpo da requisição (signupDto): JSON contendo dados de login do usuário.
+* Retorna um objeto JSON com status, mensagem, dados do usuário autenticado e token de autenticação.
+**Payload da Requisição:**
+``` json
+{
+	"username": "user",
+	"password": "Acesso1!"
+}
 ```
 
-## Test
+### Perfil
 
-```bash
-# unit tests
-$ yarn run test
+#### PUT /api/auth/profile
 
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
+* Edita o perfil de um usuário autenticado.
+* Requer autenticação.
+* Corpo da requisição (profileDto): JSON contendo dados a serem atualizados no perfil.
+* Retorna um objeto JSON com status, mensagem e dados do perfil atualizado.
+**Payload da Requisição:**
+``` json
+{
+	"name": "user edit",
+	"email": "email@email.com"
+}
 ```
 
-## Support
+### Lugares
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+* Somente o criador do lugar pode editar o lugar
 
-## Stay in touch
+#### POST /api/auth/place
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+* Cria um novo lugar.
+* Requer autenticação.
+* Corpo da requisição (placeDto): JSON contendo dados do lugar a ser criado, incluindo imagem (opcional).
+* Retorna um objeto JSON com status, mensagem e dados do lugar criado.
+**Payload da Requisição:**
+``` json
+{
+	"city": "Nilopolis",
+	"state": "RJ",
+	"name": "Praca Dois"	
+}
+```
 
-## License
+#### PUT /api/auth/place/:id
 
-Nest is [MIT licensed](LICENSE).
+* Edita um lugar existente.
+* Requer autenticação.
+* Parâmetro da URL (id): ID do lugar a ser atualizado.
+* Corpo da requisição (placeDto): JSON contendo dados a serem atualizados no lugar.
+* Retorna um objeto JSON com status, mensagem e dados do lugar atualizado.
+**URL da Requisição:**
+``` bash
+PUT /api/auth/place/1
+
+```
+**Payload da Requisição:**
+``` json
+{
+	"city": "Nilopolis",
+	"state": "RJ",
+	"name": "Praca um"	
+}
+```
+
+#### DELETE /api/auth/place/:id
+
+* Deleta um lugar existente.
+* Requer autenticação.
+* Parâmetro da URL (id): ID do lugar a ser deletado.
+* Retorna um objeto JSON com status, mensagem e dados da operação de exclusão.
+**URL da Requisição:**
+``` bash
+DELETE /api/auth/place/3
+```
+
+#### GET /api/auth/place/:id
+
+* Obtém detalhes de um lugar específico.
+* Requer autenticação.
+* Parâmetro da URL (id): ID do lugar a ser consultado.
+* Retorna um objeto JSON com status, mensagem e dados do lugar.
+**URL da Requisição:**
+``` bash
+GET /api/auth/place/11
+
+```
+
+#### GET /api/auth/places
+
+* Lista todos os lugares ou filtra por critérios específicos (busca, estado, cidade, take, skip).
+* Requer autenticação.
+* Parâmetros de consulta (search, state, city, take, skip): Filtros opcionais para consulta.
+* Retorna um objeto JSON com status, mensagem e lista de lugares.
+**URL da Requisição:**
+``` bash
+GET /api/auth/places?search=Parque&state=São%20Paulo&city=São%20Paulo&take=10&skip=0
+
+```
+
+
+## Estrutura de Pastas
+
+``` lua
+src/ 
+|-- @types/ 
+|-- application/ 
+|    |-- dtos/ 
+|    |-- controllers/ 
+|    |-- middlewares/ 
+|-- domain/ 
+|    |-- __test__/ 
+|    |-- services/ 
+|    |-- entities/ 
+|        |-- User.ts 
+|-- infrastructure/ 
+|    |-- models/ 
+|    |-- repository/ 
+|-- lib/ 
+|-- utils/ 
+|-- main.ts 
+|-- app.module.ts
+```

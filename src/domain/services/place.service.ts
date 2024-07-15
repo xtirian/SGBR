@@ -223,9 +223,6 @@ export class PlaceService {
     const take = filter.take ? filter.take : 5;
     const skip = filter.skip ? filter.skip : 0;    
     const query = this.placesRepository.createQueryBuilder('place');
-
-    console.log(busca.search)
-    console.log(search)
     if (state) {
       query.andWhere('place.state ILIKE :state', { state: `%${state}%` });
     }
