@@ -1,9 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Profile } from '../entities/Profile';
-import { LangService } from '../../utils/LangService';
+import { LangService } from '../../shared/utils/LangService';
 import { ProfileDto } from 'src/application/dtos/profile.dto';
-import { regex } from '../../lib/regex';
+import { regex } from '../../shared/lib/regex';
 import { Repository } from 'typeorm';
 
 @Injectable()

@@ -3,11 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 import { User } from '../entities/User';
 import { UserDto } from 'src/application/dtos/user.dto';
-import { LangService } from '../../utils/LangService';
+import { LangService } from '../../shared/utils/LangService';
 import { Profile } from '../entities/Profile';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
-import { regex } from '../../lib/regex';
+import { regex } from '../../shared/lib/regex';
 
 @Injectable()
 export class UserService {

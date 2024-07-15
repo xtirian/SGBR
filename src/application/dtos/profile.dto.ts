@@ -1,5 +1,5 @@
 import { IsEmail, IsOptional, IsString, Matches } from 'class-validator';
-import { regex } from 'src/lib/regex';
+import { regex } from 'src/shared/lib/regex';
 
 export class ProfileDto {
   @IsOptional()

@@ -166,10 +166,17 @@ export class PlacesController {
   @Get('places')
   @UseGuards(AuthGuard)
   async getAll(
-    @Query() filtro: { state: string; city: string; search: string; skip: number; take: number },    
+    @Query()
+    filtro: {
+      state: string;
+      city: string;
+      search: string;
+      skip: number;
+      take: number;
+    },
   ): Promise<ResponseDto<Place[]>> {
     try {
-      const {state, city, search, skip, take} = filtro      
+      const { state, city, search, skip, take } = filtro;
       const responseService = await this.placeService.getAll({
         busca: {
           search,
