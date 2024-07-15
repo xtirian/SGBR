@@ -2,7 +2,6 @@ import { ProfileService } from '../services/profile.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Profile } from '../entities/Profile';
-import { HttpException, HttpStatus } from '@nestjs/common';
 import { ProfileDto } from 'src/application/dtos/profile.dto';
 import { LangService } from '../../utils/LangService';
 

@@ -36,6 +36,7 @@ export class Profile {
     this.updatedAt = new Date();
   }
 
-  @OneToMany(() => Place, (place) => place.Profile)
-  Places?: Place[];
+  @OneToMany(() => Place, place => place.Profile)
+  Places: Place[];
 }
+

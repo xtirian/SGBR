@@ -42,10 +42,10 @@ export class PlaceService {
   }
 
   validateGallery(data: PlaceDto) {
-    const { gallery: galery } = data;
+    const { gallery } = data;
 
-    if (galery.length) {
-      galery.forEach((photo) => {
+    if (gallery && gallery.length) {
+      gallery.forEach((photo) => {
         if (!regex.photo.test(photo.photo))
           throw new HttpException(
             this.langService.getLang('photoInvalid'),
@@ -216,27 +216,35 @@ export class PlaceService {
   }
 
   async getAll(filter: IFilterPlace) {
-    const { busca, skip, take } = filter;
+    const { busca } = filter;
+    const state = typeof busca.state === 'string' ? busca.state : '';
+    const city = typeof busca.city === 'string' ? busca.city : '';
+    const search = typeof busca.search === 'string' ? busca.search : '';
+    const take = filter.take ? filter.take : 5;
+    const skip = filter.skip ? filter.skip : 0;    
     const query = this.placesRepository.createQueryBuilder('place');
-    busca.state &&
-      query.andWhere('place.state ILIKE :state', { state: `%${busca.state}%` });
-    busca.city &&
-      query.andWhere('place.city ILIKE :city', { city: `%${busca.city}%` });
-    busca.search &&
+
+    console.log(busca.search)
+    console.log(search)
+    if (state) {
+      query.andWhere('place.state ILIKE :state', { state: `%${state}%` });
+    }
+    if (city) {
+      query.andWhere('place.city ILIKE :city', { city: `%${city}%` });
+    }
+    if (search) {
       query.andWhere(
         new Brackets((qb) => {
-          qb.where('place.name ILIKE :search', { search: `%${busca.search}%` })
-            .orWhere('place.city ILIKE :search', {
-              search: `%${busca.search}%`,
-            })
-            .orWhere('place.state ILIKE :search', {
-              search: `%${busca.search}%`,
-            });
-        }),
+          qb.where('place.name ILIKE :search', { search: `%${search}%` })
+            .orWhere('place.city ILIKE :search', { search: `%${search}%` })
+            .orWhere('place.state ILIKE :search', { search: `%${search}%` });
+        })
       );
+    }
+
     const places = await query
-      .skip(skip ?? 0)
-      .take(take ?? 5)
+      .skip(skip)
+      .take(take)
       .getMany();
     return places;
   }
@@ -248,6 +256,6 @@ interface IFilterPlace {
     state?: string;
     city?: string;
   };
-  take: number;
-  skip: number;
+  take?: number;
+  skip?: number;
 }

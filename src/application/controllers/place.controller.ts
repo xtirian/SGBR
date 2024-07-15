@@ -62,7 +62,7 @@ export class PlacesController {
       }
 
       placeDto.profileId = req.user!.profileId;
-      if (thumb.filename) {
+      if (thumb !== undefined && thumb.filename) {
         placeDto.thumb = `/uploads/${thumb.filename}`;
       }
       const responseService = await this.placeService.create(placeDto);
@@ -83,7 +83,7 @@ export class PlacesController {
     }
   }
 
-  @Put('place')
+  @Put('place/:id')
   @UseGuards(AuthGuard)
   async editPlace(
     @Request() req: ExpressRequest,
@@ -166,21 +166,18 @@ export class PlacesController {
   @Get('places')
   @UseGuards(AuthGuard)
   async getAll(
-    @Query() search: string,
-    @Query() state: string,
-    @Query() city: string,
-    @Query() take: number,
-    @Query() skip: number,
+    @Query() filtro: { state: string; city: string; search: string; skip: number; take: number },    
   ): Promise<ResponseDto<Place[]>> {
     try {
+      const {state, city, search, skip, take} = filtro      
       const responseService = await this.placeService.getAll({
         busca: {
           search,
           state,
           city,
         },
-        take,
-        skip,
+        take: Number(take) || undefined,
+        skip: Number(skip) || undefined,
       });
       return {
         statusCode: HttpStatus.OK,

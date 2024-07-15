@@ -3,7 +3,7 @@ import { User } from '../entities/User';
 import { Profile } from '../entities/Profile';
 import { LangService } from '../../utils/LangService';
 import { JwtService } from '@nestjs/jwt';
-import { Test, TestingModule, TestingModuleBuilder } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import { UserService } from '../services/user.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 
@@ -16,12 +16,14 @@ describe('UserService', () => {
   let jwtServiceMock: jest.Mocked<JwtService>;
 
   beforeEach(async () => {
-
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         UserService,
         { provide: getRepositoryToken(User), useValue: usersRepositoryMock },
-        { provide: getRepositoryToken(Profile), useValue: profileRepositoryMock },
+        {
+          provide: getRepositoryToken(Profile),
+          useValue: profileRepositoryMock,
+        },
         { provide: DataSource, useValue: dataSourceMock },
         { provide: LangService, useValue: langServiceMock },
         { provide: JwtService, useValue: jwtServiceMock },
